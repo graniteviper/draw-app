@@ -62,10 +62,9 @@ app.post("/signup",async (req,res) => {
             id:user.id
         },JWT_SECRET
     )
-
     res.json({
         token,
-        name: user.name,
+        // name: user.name,
         message: "User signed up."
     })
     return;
@@ -102,11 +101,11 @@ app.post("/signin",async (req, res) => {
             id:user.id
         },JWT_SECRET
     );
-
-    res.json({
+    res.setHeader("authorization",token).json({
         token,
+        // name: user.name,
         message: "User Signed in."
-    })
+    });
 })
 
 app.post("/createRoom",middleware,async (req, res) => {
@@ -195,5 +194,27 @@ app.post("/chats/:roomId",async (req,res)=>{
     }
 })
     */
+
+app.get('/user',middleware, async (req,res) => {
+    const user = await prismaClient.user.findUnique({
+        where:{
+            //@ts-ignore
+            id: req.userId
+        }
+    })
+    if(!user){
+        res.json({
+            message: "User not found."
+        })
+        return;
+    }
+    //@ts-ignore
+    // console.log(req.userId);
+    
+    res.json({
+        name: user.name
+    });
+    return;
+})
 
 app.listen(8000);

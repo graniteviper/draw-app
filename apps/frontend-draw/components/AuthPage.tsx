@@ -1,10 +1,10 @@
 "use client";
 import axios from "axios";
 import React, { useRef } from "react";
-// import {Button} from "@repo/ui/button"
+import Button from "@repo/ui/button";
 import { userSignupSchema, userSigninSchema } from "@repo/commmon/types";
-// import setCookie from "@/middlewares/cookies";
 import { useRouter } from "next/navigation";
+// import { POST } from "@/app/api/cookie/route";
 
 const AuthPage = ({ isSignIn }: { isSignIn: boolean }) => {
   const router = useRouter();
@@ -33,7 +33,7 @@ const AuthPage = ({ isSignIn }: { isSignIn: boolean }) => {
     const { success } = userSignupSchema.safeParse(formData);
     if (success) {
       const user = await axios.post("http://localhost:8000/signup", formData);
-      // setCookie(user.data.token);
+      localStorage.setItem('authorization',user.data.token);
       router.push("/dashboard");
     } else {
       console.log("Data entered is not in valid format.");
@@ -57,7 +57,12 @@ const AuthPage = ({ isSignIn }: { isSignIn: boolean }) => {
     const { success } = userSigninSchema.safeParse(formData);
     if (success) {
       const user = await axios.post("http://localhost:8000/signin", formData);
-      // setCookie(user.data.token);
+      // console.log(user);
+      // const token = await axios.post("http://localhost:3001/api/cookie", {
+      //   cookie: user.data.token,
+      // });
+      // console.log(token);
+      localStorage.setItem('authorization',user.data.token);
       router.push("/dashboard");
     } else {
       console.log("Data entered is not in valid format.");
@@ -66,30 +71,35 @@ const AuthPage = ({ isSignIn }: { isSignIn: boolean }) => {
 
   return (
     <>
-      <div className="w-screen h-screen flex items-center justify-center">
-        <div className="py-10 px-4 m-2 flex-col bg-red-600 gap-5 rounded-lg flex">
+      <div className="w-screen h-screen flex items-center justify-center bg-gray-200">
+        <div className="py-10 px-8 m-2 flex-col bg-white gap-5 rounded-lg shadow-lg flex">
           {!isSignIn && (
             <input
-              className="rounded-sm text-center"
+              className="rounded-lg text-center p-3 mb-4 bg-gray-100 border border-gray-300"
               type="text"
-              placeholder="name"
+              placeholder="Name"
               ref={nameRef}
             />
           )}
           <input
-            className="rounded-sm text-center"
+            className="rounded-lg text-center p-3 mb-4 bg-gray-100 border border-gray-300"
             type="text"
             placeholder="Email"
             ref={emailRef}
           />
           <input
-            className="rounded-sm text-center"
+            className="rounded-lg text-center p-3 mb-4 bg-gray-100 border border-gray-300"
             type="password"
-            placeholder="password"
+            placeholder="Password"
             ref={passwordRef}
           />
 
-          
+          <button
+            onClick={isSignIn ? signin : signup}
+            className="text-white bg-blue-500 p-3 rounded-lg hover:bg-blue-600"
+          >
+            {isSignIn ? "Sign In" : "Sign Up"}
+          </button>
         </div>
       </div>
     </>

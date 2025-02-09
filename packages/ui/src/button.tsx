@@ -1,10 +1,13 @@
-"use client";
+import { ReactElement } from "react";
 
-export type ButtonProps = {
+type MyButtonProps = {
+  onClick?: () => void;
   label: string;
-  className?: string;
+  className: string;
 };
 
-export const Button = ({ label, className }: ButtonProps) => {
-  return <button className={className}>{label}</button>;
+const Button: React.FC<MyButtonProps> = ({ onClick,label,className }): ReactElement<HTMLButtonElement> => {
+  return <button className={className} onClick={onClick}>{label}</button>;
 };
+
+export default Button;
