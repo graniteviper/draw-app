@@ -13,19 +13,21 @@ const corsOptions = {
 
 const app = express();
 
-
 app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.post("/signup",async (req,res) => {
+    // console.log(req.body);
     const userData = {
         email: req.body.email,
         password: req.body.password,
         name: req.body.name
     }
     const {success} = userSignupSchema.safeParse(userData);
+    // console.log(userData);
     if(!success){
-        res.json({
+        res.status(400).json({
             message: "Data missing.",
         })
         return;
