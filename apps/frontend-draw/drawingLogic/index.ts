@@ -12,7 +12,7 @@ type Shape = {
 export async function initDraw(
   canvas: HTMLCanvasElement,
   roomId: string,
-  socket: WebSocket
+  socket: WebSocket,
 ) {
   const ctx = canvas.getContext("2d");
 
@@ -67,7 +67,7 @@ export async function initDraw(
         message: JSON.stringify({
           shape
         }),
-        roomId
+        roomId,
       }))
     }
   });
