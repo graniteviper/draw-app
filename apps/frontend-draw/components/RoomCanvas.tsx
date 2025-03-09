@@ -8,9 +8,10 @@ const RoomCanvas = ({roomId}: {
 }) => {
 
     const [socket, setsocket] = useState<WebSocket | null>(null);
+    const [shapeSelected, setshapeSelected] = useState("");
 
     useEffect(()=>{
-        const ws = new WebSocket(WS_URL);
+        const ws = new WebSocket(`${WS_URL}?token=${localStorage.getItem('authorization')}`);
         ws.onopen = () => {
             setsocket(ws);
             ws.send(JSON.stringify({
@@ -31,7 +32,19 @@ const RoomCanvas = ({roomId}: {
     }
 
   return (
-    <Canvas roomId={roomId} socket={socket}/>
+    <>
+    <div className='absolute text-white w-screen flex justify-center top-4'>
+        <ul className='flex gap-5'>
+          <li onClick={()=>{setshapeSelected("rect")}} className='border-2 border-yellow-400 hover:border-red-400 transition-all duration-200 px-4 py-1 rounded-md cursor-pointer'>Rectangle</li>
+          <li onClick={()=>{setshapeSelected("circle")}} className='border-2 border-yellow-400 hover:border-red-400 transition-all duration-200 px-4 py-1 rounded-md cursor-pointer'>Circle</li>
+          <li className='border-2 border-yellow-400 hover:border-red-400 transition-all duration-200 px-4 py-1 rounded-md cursor-pointer'>Triangle</li>
+          <li className='border-2 border-yellow-400 hover:border-red-400 transition-all duration-200 px-4 py-1 rounded-md cursor-pointer'>Rhombus</li>
+          <li className='border-2 border-yellow-400 hover:border-red-400 transition-all duration-200 px-4 py-1 rounded-md cursor-pointer'>Eraser</li>
+          <li className='border-2 border-yellow-400 hover:border-red-400 transition-all duration-200 px-4 py-1 rounded-md cursor-pointer'>Pencil</li>
+        </ul>
+      </div>
+    <Canvas roomId={roomId} socket={socket} shapeSelected={shapeSelected}/>
+    </>
   )
 }
 

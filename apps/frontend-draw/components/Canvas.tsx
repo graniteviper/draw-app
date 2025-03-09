@@ -1,17 +1,19 @@
 import { initDraw } from "@/drawingLogic";
 import React, { useEffect, useRef } from "react";
 
-const Canvas = ({roomId,socket}: {
+const Canvas = ({roomId,socket,shapeSelected}: {
     roomId: string,
-    socket: WebSocket
+    socket: WebSocket,
+    shapeSelected: string
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // console.log("canvas rendered");
     if (canvasRef.current) {
-      initDraw(canvasRef.current, roomId,socket);
+      initDraw(canvasRef.current, roomId,socket,shapeSelected);
     }
-  }, [canvasRef]);
+  }, [canvasRef,shapeSelected]);
 
   return (
     <div>

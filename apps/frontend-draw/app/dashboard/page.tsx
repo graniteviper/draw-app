@@ -9,6 +9,7 @@ const page = () => {
   const router = useRouter();
   const [name, setName] = useState<string | null>(null);
   const [rooms, setrooms] = useState([]);
+  const [matchingRooms,setMatchingRooms] = useState([]);
   const newRoomRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -67,6 +68,32 @@ const page = () => {
     router.push(`canvas/${roomId}?token=${cookie}`);
   }
 
+  async function joinRoom(slug: string){
+    const token = localStorage.getItem('authorization');
+    // console.log(token)
+    if(slug === ""){
+      setMatchingRooms([]);
+      return;
+    } else{
+      const res = await axios.post("http://localhost:8000/getMatchingRooms",{
+        headers:{
+          'authorization': token
+        },
+        data:{
+          slug
+        }
+      });
+      // console.log("response:",res.data.data);
+      setMatchingRooms(res.data.data);
+    }
+  }
+  
+  useEffect(() => {
+  console.log(matchingRooms);
+  setMatchingRooms(matchingRooms);
+}, [matchingRooms])
+
+  
   return (
     <div className="w-screen h-screen">
       <div className="text-lg m-10">
@@ -92,6 +119,17 @@ const page = () => {
           //@ts-ignore
           <Button key={room.id} className="border-2 border-black m-4 px-3 py-1 rounded-sm" label={room.slug} onClick={()=>takeToCanvas(room.id)}></Button>
         ))}
+      </div>
+      <div>
+        <div>
+          <input type="text" placeholder="Search for a room" className="border-2 border-black rounded-sm m-10" onChange={(e) => {joinRoom(e.currentTarget.value)}}/>
+        </div>
+        <div>
+        {matchingRooms.map((room)=> (
+          // @ts-ignore
+          <Button key={room.id} className="border-2 border-black m-4 px-3 py-1 rounded-sm" label={room.slug} onClick={()=>takeToCanvas(room.id)}></Button>
+        ))}
+        </div>
       </div>
     </div>
   );

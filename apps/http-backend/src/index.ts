@@ -95,17 +95,17 @@ app.post("/signin",async (req, res) => {
         })
         return;
     }
-    console.log("userId from http signin:");
+    // console.log("userId from http signin:");
     
-    console.log(user.id);
+    // console.log(user.id);
     
     const token = jwt.sign(
         {
             id:user.id
         },JWT_SECRET
     );
-    console.log("token from http:");
-    console.log(token);
+    // console.log("token from http:");
+    // console.log(token);
     res.setHeader("authorization",token).json({
         token,
         // name: user.name,
@@ -241,6 +241,21 @@ app.post("/getUserId",middleware, (req,res) => {
         userId: req.userId,
         message: "token processed."
     })
+    return;
+});
+
+app.post("/getMatchingRooms", async (req,res) => {
+    const inputSlug = req.body.data.slug;
+    const data = await prismaClient.room.findMany({
+        where:{
+            slug: {
+                startsWith: inputSlug
+            }
+        }
+    });
+    res.status(200).json({
+        data
+    });
     return;
 })
 

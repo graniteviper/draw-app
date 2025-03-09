@@ -24,7 +24,7 @@ function userCheck(token: string): string | null {
   if (!decoded || !decoded.id) {
     return null;
   }
-  console.log(decoded);
+  // console.log(decoded);
   return decoded.id;
   } catch (error) {
     console.error(error);
@@ -34,7 +34,7 @@ function userCheck(token: string): string | null {
 
 wss.on("connection",async function connection(ws, request) {
   const url = request.url;
-  console.log(url);
+  // console.log(url);
   if (!url) {
     return;
   }
@@ -42,8 +42,8 @@ wss.on("connection",async function connection(ws, request) {
   const queryParams = new URLSearchParams(url.split("?")[1]);
   const token = queryParams.get("token") || "";
   const userId = userCheck(token);
-  console.log("token");
-  console.log(token);
+  // console.log("token");
+  // console.log(token);
   // console.log(userId);
   if (!userId) {
     ws.close();
@@ -96,7 +96,7 @@ wss.on("connection",async function connection(ws, request) {
         }
       });  // use queue to save to db
 
-      console.log(parsedData);
+      // console.log(parsedData);
 
       await prismaClient.chat.create({
         data:{
