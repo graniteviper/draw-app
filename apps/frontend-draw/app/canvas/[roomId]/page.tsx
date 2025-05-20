@@ -1,21 +1,18 @@
-import RoomCanvas from "@/components/RoomCanvas";
+import Roomcanvas from "@/components/Roomcanvas";
+import React from "react";
 
-const canvas = async ({params}: {
-  params: {
+const page = async ({params}:{
+  params:{
     roomId: string
   }
 }) => {
 
-    const roomId = (await params).roomId;
-    // console.log(roomId);
-    
-    // Hot Reloading
-
+  const roomId = (await params).roomId;
   return (
-    <div>
-      <RoomCanvas roomId={roomId}/>
-    </div>
-  )
-}
+      <div className="w-full h-full overflow-hidden">
+        <Roomcanvas roomId={roomId}/>
+      </div>
+  );
+};
 
-export default canvas
+export default page;

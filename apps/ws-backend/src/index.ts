@@ -38,23 +38,26 @@ wss.on("connection",async function connection(ws, request) {
   if (!url) {
     return;
   }
-
+  
   const queryParams = new URLSearchParams(url.split("?")[1]);
   const token = queryParams.get("token") || "";
   const userId = userCheck(token);
-  // console.log("token");
+  // console.log("token: ",token);
   // console.log(token);
-  // console.log(userId);
+  // console.log(request.url);
   if (!userId) {
+    // console.log(userId);
     ws.close();
     return;
   }
-
+  
   users.push({
     userId,
     rooms: [],
     ws,
   });
+  // console.log(users);
+  
 
   ws.on("message",async function message(data) {
     let parsedData;
@@ -83,8 +86,12 @@ wss.on("connection",async function connection(ws, request) {
     if (parsedData.type === "chat") {
       const roomId = parsedData.roomId;
       const message = parsedData.message;
-      // console.log("hi i am in chat");
+      // console.log(parsedData);
+      // console.log("hi");
+      
+      // console.log(roomId);
       users.forEach((user) => {
+        // console.log(user);
         if (user.rooms.includes(roomId)) {
           user.ws.send(
             JSON.stringify({
