@@ -19,7 +19,7 @@ const Toolbar: React.FC<CanvasProps> = ({setselectedShape}) => {
   };
 
   const drawCircle = () => {
-    console.log("Circle drawn");
+    setselectedShape("Circle")
   };
 
   const drawPen = () => {

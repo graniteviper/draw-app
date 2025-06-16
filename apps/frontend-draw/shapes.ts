@@ -1,6 +1,3 @@
-// shapes.ts
-
-// Common properties for all shapes
 interface Shape {
     id: string;
     color: string;
